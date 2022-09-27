@@ -1,0 +1,49 @@
+name: Version Checking
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  check_previous_version:
+    runs-on: ubuntu-latest
+    outputs: 
+      previous_version: ${{ steps.get_previous_version.outputs.previous_version }}
+    steps:
+      - name: Get previous version
+        id: get_previous_version
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const { data: { tag_name } } = await github.repos.getLatestRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            })
+            return tag_name
+  check_current_version:
+    runs-on: ubuntu-latest
+    outputs: 
+      current_version: ${{ steps.get_current_version.outputs.current_version }}
+    steps:
+      - name: Get current version
+        id: get_current_version
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const { data: { tag_name } } = await github.repos.getLatestRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            })
+            return tag_name
+  compare_versions:
+    runs-on: ubuntu-latest
+    needs: [check_previous_version, check_current_version]
+    #if: ${{ needs.check_previous_version.outputs.previous_version != needs.check_current_version.outputs.current_version }}
+    steps:
+      - name: Compare versions
+        run: echo "Previous version is ${{ needs.check_previous_version.outputs.previous_version }} and current version is ${{ needs.check_current_version.outputs.current_version }}"
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: version
+          path: artifact.txt
+    
