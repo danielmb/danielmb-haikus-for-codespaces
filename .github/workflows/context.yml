@@ -18,3 +18,17 @@ jobs:
         run: echo '${{ toJSON(strategy) }}'
       - name: Dump matrix context
         run: echo '${{ toJSON(matrix) }}'
+  get_username:
+    runs-on: ubuntu-latest
+    outputs:
+      username: ${{ steps.get_username.outputs.username}}
+    steps:
+      - name: Get the username
+        id: get_username
+        run: echo "::set-output name=username::${{ github.triggering_actor }}"
+  echo_username:
+    runs-on: ubuntu-latest
+    needs: get_username
+    steps:
+      - name: Echo the username
+        run: echo ${{ needs.get_username.outputs.username }}
