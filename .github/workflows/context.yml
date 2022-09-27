@@ -29,8 +29,9 @@ jobs:
         id: get_username
         run: echo "::set-output name=username::${{ github.triggering_actor }}"
   echo_username:
-    runs-on: ubuntu-latest
     needs: get_username
+    runs-on: ubuntu-latest
+    if: ${{ github.run_attempt > 1}}
     steps:
       - name: Echo the username
         run: echo ${{ needs.get_username.outputs.username }}
