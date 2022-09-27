@@ -18,7 +18,6 @@ jobs:
         run: echo '${{ toJSON(strategy) }}'
       - name: Dump matrix context
         run: echo '${{ toJSON(matrix) }}'
-      - name: Dump secrets context
   get_username:
     runs-on: ubuntu-latest
     outputs:
