@@ -1,6 +1,16 @@
 name: Context testing
 on: 
   workflow_dispatch:
+    inputs:
+      SomeInput: 
+        description: 'Some input'
+        required: true
+        default: 'input1'
+        type: choice
+        options:
+        - input1
+        - input2 
+        - input3
 
 jobs:
   dump_contexts_to_log:
