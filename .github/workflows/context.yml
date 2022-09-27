@@ -32,4 +32,9 @@ jobs:
     if: ${{ github.run_attempt > 1}}
     steps:
       - name: Echo the username
-        run: echo ${{ needs.get_username.outputs.username }}
+        run: echo "Rerun number ${{github.run_attempt}} trigered by  ${{ needs.get_username.outputs.username }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: rerun
+          path: artifact.txt
