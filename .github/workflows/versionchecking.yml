@@ -14,10 +14,7 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            const { data: { tag_name } } = await github.repos.getLatestRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo
-            })
+            echo ${{ toJSON(github) }}
             return tag_name
   check_current_version:
     runs-on: ubuntu-latest
@@ -29,10 +26,7 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            const { data: { tag_name } } = await github.repos.getLatestRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo
-            })
+            echo ${{ toJSON(github) }}
             return tag_name
   compare_versions:
     runs-on: ubuntu-latest
